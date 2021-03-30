@@ -1,0 +1,8 @@
+services:
+  server:
+    container_name: palmox_server
+    build: ./server
+    ports:
+      - "8080:5000"
+    volumes:
+      - ../src/server:/home/pythonuser/app
