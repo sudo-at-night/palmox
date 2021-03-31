@@ -3,6 +3,16 @@ services:
     container_name: palmox_server
     build: ./server
     ports:
-      - "8080:5000"
+      - "8081:5000"
     volumes:
       - ../src/server:/home/pythonuser/app
+  db:
+    container_name: palmox_db
+    build: ./db
+    env_file: ./db/.env
+  db_admin:
+    container_name: palmox_db_admin
+    build: ./db-admin
+    env_file: ./db-admin/.env
+    ports:
+      - "8082:80"
