@@ -1,10 +1,12 @@
-FROM python:3.9-alpine
+FROM python:3.9-slim
 
 ENV PATH "${PATH}:/home/pythonuser/.local/bin"
 
 COPY src/requirements.txt /tmp/
 
-RUN adduser --disabled-password pythonuser
+RUN apt-get update && apt-get -y install gcc python3-dev libpq-dev
+
+RUN useradd --create-home pythonuser
 USER pythonuser
 WORKDIR /home/pythonuser/app
 

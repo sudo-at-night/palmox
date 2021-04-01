@@ -1,6 +1,5 @@
 from flask import Flask
-app = Flask(__name__)
+from blueprints.web import web_blueprint
 
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
+app = Flask(__name__)
+app.register_blueprint(web_blueprint)
