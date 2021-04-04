@@ -18,3 +18,14 @@ services:
     env_file: ./db-admin/.env
     ports:
       - "8082:80"
+  db_messenger:
+    container_name: palmox_db_messenger
+    build: ./db-messenger
+    secrets:
+      - redis_client_password
+      - redis_server_password
+secrets:
+  redis_client_password:
+    file: ./secrets/redis_client_password.secret
+  redis_server_password:
+    file: ./secrets/redis_server_password.secret
