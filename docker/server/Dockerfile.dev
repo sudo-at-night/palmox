@@ -10,6 +10,8 @@ RUN useradd --create-home pythonuser
 USER pythonuser
 WORKDIR /home/pythonuser/app
 
-RUN pip install -r /tmp/requirements.txt
+RUN pip install -r /tmp/requirements.txt && \
+    pip install debugpy
 
-CMD [ "tail", "-f", "/dev/null" ]
+
+CMD ["python", "-m", "debugpy", "--listen", "5678", "/home/pythonuser/.local/bin/flask", "run", "--host", "0.0.0.0", "--no-debugger"]

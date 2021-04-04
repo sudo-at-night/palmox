@@ -1,7 +1,9 @@
 services:
   server:
     container_name: palmox_server
-    build: ./server
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
     ports:
       - "8081:5000"
     volumes:
