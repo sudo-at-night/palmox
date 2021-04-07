@@ -2,7 +2,7 @@ FROM python:3.9-slim
 
 ENV PATH "${PATH}:/home/pythonuser/.local/bin"
 
-COPY src/requirements.txt /tmp/
+COPY vol/requirements.txt /tmp/
 
 RUN apt-get update && apt-get -y install gcc python3-dev libpq-dev
 

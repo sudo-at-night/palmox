@@ -8,24 +8,40 @@ services:
       - "8081:5000"
     volumes:
       - ../src/server:/home/pythonuser/app
+    networks:
+      - public
+      - internal
   db:
     container_name: palmox_db
-    build: ./db
+    build:
+      context: ./db
+      dockerfile: Dockerfile.dev
     env_file: ./db/.env
+    networks:
+      - internal
   db_admin:
     container_name: palmox_db_admin
-    build: ./db-admin
+    build:
+      context: ./db-admin
+      dockerfile: Dockerfile.dev
     env_file: ./db-admin/.env
     ports:
       - "8082:80"
+    networks:
+      - public
+      - internal
   db_messenger:
     container_name: palmox_db_messenger
-    build: ./db-messenger
-    secrets:
-      - redis_client_password
-      - redis_server_password
-secrets:
-  redis_client_password:
-    file: ./secrets/redis_client_password.secret
-  redis_server_password:
-    file: ./secrets/redis_server_password.secret
+    build:
+      context: ./db-messenger
+      dockerfile: Dockerfile.dev
+    env_file: ./db-messenger/.env
+    networks:
+      - internal
+
+networks:
+  public:
+    driver: bridge
+  internal:
+    driver: bridge
+    internal: true

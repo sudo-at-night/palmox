@@ -1,6 +1,5 @@
 from graphene import List, Field, ObjectType, String, Schema, Boolean
 
-
 class FeatureFlag(ObjectType):
     """
     A feature flag created by the user in the system.
@@ -15,6 +14,8 @@ class Query(ObjectType):
     feature_flags = Field(List(FeatureFlag))
 
     def resolve_feature_flag(root, info, id):
+        print("Hello")
+
         return {
             "id": id,
             "is_on": "AFK Flag",
