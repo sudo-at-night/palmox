@@ -14,8 +14,6 @@ class Query(ObjectType):
     feature_flags = Field(List(FeatureFlag))
 
     def resolve_feature_flag(root, info, id):
-        print("Hello")
-
         return {
             "id": id,
             "is_on": "AFK Flag",
