@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-# Replace password in the config with secret
+# Replace password in the config with passed password
 sed -i "s/{{ PASSWORD }}/$PASSWORD/g" /home/redis/redis.conf
 
 # first arg is `-f` or `--some-option`

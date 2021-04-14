@@ -1,4 +1,4 @@
 from .redis import redis_instance
 
-def return_redis():
+def get_redis():
     return redis_instance

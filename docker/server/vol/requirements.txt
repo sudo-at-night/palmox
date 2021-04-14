@@ -8,3 +8,4 @@ graphene >= 2.1
 Flask-GraphQL >= 2.0
 Redis >= 3.5
 python-dotenv >= 0.17
+blinker >= 1.4
