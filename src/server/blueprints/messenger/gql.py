@@ -1,5 +1,7 @@
 from graphene import List, Field, ObjectType, String, Schema, Boolean
+from graphql import GraphQLError
 from models.feature_flag_dao import FeatureFlagDao
+
 
 class FeatureFlag(ObjectType):
     """
@@ -18,12 +20,22 @@ class Query(ObjectType):
     def resolve_feature_flag(root, info, id):
         flag_dao = FeatureFlagDao()
 
-        return flag_dao.get_by_id(id)
+        try:
+            flag = flag_dao.get_by_id(id)
+        except:
+            raise GraphQLError("Error when fetching the flag")
+
+        return flag
 
     def resolve_feature_flags(root, info):
         flag_dao = FeatureFlagDao()
 
-        return flag_dao.get_all()
+        try:
+            flags = flag_dao.get_all()
+        except:
+            raise GraphQLError("Error when fetching flags")
+
+        return flags
 
 
 schema = Schema(query=Query)
