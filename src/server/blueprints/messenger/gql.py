@@ -1,4 +1,4 @@
-from graphene import List, Field, ObjectType, String, Schema, Boolean
+from graphene import List, Field, ObjectType, Boolean, String, Int, Schema
 from graphql import GraphQLError
 from models.feature_flag_dao import FeatureFlagDao
 
@@ -8,13 +8,13 @@ class FeatureFlag(ObjectType):
     A feature flag created by the user in the system.
     """
 
-    id = String()
+    id = Int()
     name = String()
     is_active = Boolean()
 
 
 class Query(ObjectType):
-    feature_flag = Field(FeatureFlag, id=String())
+    feature_flag = Field(FeatureFlag, id=Int())
     feature_flags = Field(List(FeatureFlag))
 
     def resolve_feature_flag(root, info, id):

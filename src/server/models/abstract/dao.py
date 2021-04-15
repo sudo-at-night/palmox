@@ -1,12 +1,13 @@
 from typing import Dict, Union, Generic, TypeVar, List, Union
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 from redis import WatchError
 from db.redis import redis_instance as redis
 
-T = TypeVar("T")
+R = TypeVar("R")
+P = TypeVar("P")
 
 
-class AbstractExposableDao(Generic[T], metaclass=ABCMeta):
+class AbstractExposableDao(Generic[R, P], metaclass=ABCMeta):
     """
     Exposable data is exposed to system's clients
     via Redis model.
@@ -23,27 +24,43 @@ class AbstractExposableDao(Generic[T], metaclass=ABCMeta):
     REDIS_KEY: str
     """ In Redis, this leads to where the given data is stored """
 
-    def get_by_id(self, id: Union[str, int]) -> Union[T, None]:
+    def get_by_id(self, id: int) -> Union[R, None]:
         """
         Retrieve a representation of given data type.
         """
         RedisClass = self._get_extended_redis_class()
+        PostgresClass = self._get_extended_postgres_class()
+
         redis_data = redis.hgetall(f"{self.REDIS_KEY}::{id}")
         if not bool(redis_data):
-            return None
+            postgres_data = PostgresClass.query.get(id)
+            if not postgres_data:
+                return None
+            return RedisClass(
+                id=postgres_data.id,
+                name=postgres_data.name,
+                is_active=postgres_data.is_active,
+            )
 
         return RedisClass(**self._parse_hash_to_dict(redis_data))
 
-    def get_all(self) -> List[T]:
+    def get_all(self) -> List[R]:
         """
         Retrieve all representations of given data type.
         """
         RedisClass = self._get_extended_redis_class()
+        PostgresClass = self._get_extended_postgres_class()
+
         all_data = []
         redis_data = self._get_all_from_redis()
 
-        for data in redis_data:
-            all_data.append(RedisClass(**self._parse_hash_to_dict(data)))
+        if redis_data:
+            for data in redis_data:
+                all_data.append(RedisClass(**self._parse_hash_to_dict(data)))
+        else:
+            postgres_data = PostgresClass.query.all()
+            for data in postgres_data:
+                all_data.append(RedisClass(id=data.id, name=data.name, is_active=data.is_active))
 
         return all_data
 
@@ -78,6 +95,9 @@ class AbstractExposableDao(Generic[T], metaclass=ABCMeta):
 
     def _get_extended_redis_class(self):
         return self.__orig_bases__[0].__args__[0]
+
+    def _get_extended_postgres_class(self):
+        return self.__orig_bases__[0].__args__[1]
 
     @classmethod
     def _parse_hash_to_dict(cls, redis_hash) -> Dict[str, str]:
