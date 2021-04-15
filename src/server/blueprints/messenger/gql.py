@@ -23,7 +23,7 @@ class Query(ObjectType):
         try:
             flag = flag_dao.get_by_id(id)
         except:
-            raise GraphQLError("Error when fetching the flag")
+            raise GraphQLError("Internal error, cannot fetch the flag")
 
         return flag
 
@@ -33,7 +33,7 @@ class Query(ObjectType):
         try:
             flags = flag_dao.get_all()
         except:
-            raise GraphQLError("Error when fetching flags")
+            raise GraphQLError("Internal error, cannot fetch flags")
 
         return flags
 

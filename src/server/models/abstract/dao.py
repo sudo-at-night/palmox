@@ -1,7 +1,7 @@
-from typing import ClassVar, Union, Generic, TypeVar, List, Annotated
+from typing import Dict, Union, Generic, TypeVar, List, Union
 from abc import ABCMeta, abstractmethod
 from redis import WatchError
-from db import get_redis
+from db.redis import redis_instance as redis
 
 T = TypeVar("T")
 
@@ -23,19 +23,29 @@ class AbstractExposableDao(Generic[T], metaclass=ABCMeta):
     REDIS_KEY: str
     """ In Redis, this leads to where the given data is stored """
 
-    @abstractmethod
-    def get_by_id(self, id: Union[str, int]) -> T:
+    def get_by_id(self, id: Union[str, int]) -> Union[T, None]:
         """
         Retrieve a representation of given data type.
         """
-        pass
+        RedisClass = self._get_extended_redis_class()
+        redis_data = redis.hgetall(f"{self.REDIS_KEY}::{id}")
+        if not bool(redis_data):
+            return None
 
-    @abstractmethod
+        return RedisClass(**self._parse_hash_to_dict(redis_data))
+
     def get_all(self) -> List[T]:
         """
         Retrieve all representations of given data type.
         """
-        pass
+        RedisClass = self._get_extended_redis_class()
+        all_data = []
+        redis_data = self._get_all_from_redis()
+
+        for data in redis_data:
+            all_data.append(RedisClass(**self._parse_hash_to_dict(data)))
+
+        return all_data
 
     def _get_all_from_redis(self):
         """
@@ -47,8 +57,7 @@ class AbstractExposableDao(Generic[T], metaclass=ABCMeta):
         <REDIS_INDEX_KEY> contains <KEY> for
           <REDIS_KEY>::<KEY>
         """
-        r = get_redis()
-        with r.pipeline() as pipe:
+        with redis.pipeline() as pipe:
             all_data = []
 
             while True:
@@ -67,8 +76,11 @@ class AbstractExposableDao(Generic[T], metaclass=ABCMeta):
 
         return all_data
 
+    def _get_extended_redis_class(self):
+        return self.__orig_bases__[0].__args__[0]
+
     @classmethod
-    def _parse_hash_to_dict(cls, redis_hash):
+    def _parse_hash_to_dict(cls, redis_hash) -> Dict[str, str]:
         new_dict = {}
         for key, value in redis_hash.items():
             new_dict[key.decode("utf-8")] = value.decode("utf-8")
