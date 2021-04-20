@@ -60,7 +60,9 @@ class AbstractExposableDao(Generic[R, P], metaclass=ABCMeta):
         else:
             postgres_data = PostgresClass.query.all()
             for data in postgres_data:
-                all_data.append(RedisClass(id=data.id, name=data.name, is_active=data.is_active))
+                all_data.append(
+                    RedisClass(id=data.id, name=data.name, is_active=data.is_active)
+                )
 
         return all_data
 
