@@ -8,20 +8,20 @@ class FeatureFlag(ObjectType):
     A feature flag created by the user in the system.
     """
 
-    id = Int()
+    key = String()
     name = String()
     is_active = Boolean()
 
 
 class Query(ObjectType):
-    feature_flag = Field(FeatureFlag, id=Int())
+    feature_flag = Field(FeatureFlag, key=String())
     feature_flags = Field(List(FeatureFlag))
 
-    def resolve_feature_flag(root, info, id):
+    def resolve_feature_flag(root, info, key: str):
         flag_dao = FeatureFlagDao()
 
         try:
-            flag = flag_dao.get_by_id(id)
+            flag = flag_dao.get(key)
         except:
             raise GraphQLError("Internal error, cannot fetch the flag")
 

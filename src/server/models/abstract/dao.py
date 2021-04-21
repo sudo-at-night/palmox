@@ -1,5 +1,5 @@
 from typing import Dict, Union, Generic, TypeVar, List, Union
-from abc import ABCMeta
+from abc import ABCMeta, abstractmethod
 from redis import WatchError
 from db.redis import redis_instance as redis
 
@@ -23,8 +23,10 @@ class AbstractExposableDao(Generic[R, P], metaclass=ABCMeta):
     """ In Redis, this leads to where a given data's array of available indexes is. """
     REDIS_KEY: str
     """ In Redis, this leads to where the given data is stored """
+    POSTGRES_FILTER_COLUMN: str
+    """ What column from a given Postgres model should be used for querying """
 
-    def get_by_id(self, id: int) -> Union[R, None]:
+    def get(self, id: str) -> Union[R, None]:
         """
         Retrieve a representation of given data type.
         """
@@ -33,14 +35,13 @@ class AbstractExposableDao(Generic[R, P], metaclass=ABCMeta):
 
         redis_data = redis.hgetall(f"{self.REDIS_KEY}::{id}")
         if not bool(redis_data):
-            postgres_data = PostgresClass.query.get(id)
+            postgres_query = {
+                self.POSTGRES_FILTER_COLUMN: id,
+            }
+            postgres_data = PostgresClass.query.filter_by(**postgres_query).first()
             if not postgres_data:
                 return None
-            return RedisClass(
-                id=postgres_data.id,
-                name=postgres_data.name,
-                is_active=postgres_data.is_active,
-            )
+            return RedisClass(**self._parse_postgres_to_dict(postgres_data))
 
         return RedisClass(**self._parse_hash_to_dict(redis_data))
 
@@ -61,7 +62,7 @@ class AbstractExposableDao(Generic[R, P], metaclass=ABCMeta):
             postgres_data = PostgresClass.query.all()
             for data in postgres_data:
                 all_data.append(
-                    RedisClass(id=data.id, name=data.name, is_active=data.is_active)
+                    RedisClass(**self._parse_postgres_to_dict(data))
                 )
 
         return all_data
@@ -103,8 +104,22 @@ class AbstractExposableDao(Generic[R, P], metaclass=ABCMeta):
 
     @classmethod
     def _parse_hash_to_dict(cls, redis_hash) -> Dict[str, str]:
+        """
+        Parses Redis hash map to a Python dictionary.
+        Coerces all keys and values into strings.
+        """
         new_dict = {}
         for key, value in redis_hash.items():
             new_dict[key.decode("utf-8")] = value.decode("utf-8")
 
         return new_dict
+
+    @abstractmethod
+    def _parse_postgres_to_dict(self, postgres_class: P) -> Dict[str, str]:
+        """
+        Parses Postgres model of given type to a Python dictionary.
+        This needs to be implemented on every extending class
+        to understand how to map internal Postgres database schema
+        to an exposable Redis data model.
+        """
+        pass
