@@ -1,3 +1,4 @@
+import json
 from typing import Dict, Union, Generic, TypeVar, List, Union
 from abc import ABCMeta, abstractmethod
 from redis import WatchError
@@ -33,8 +34,8 @@ class AbstractExposableDao(Generic[R, P], metaclass=ABCMeta):
         RedisClass = self._get_extended_redis_class()
         PostgresClass = self._get_extended_postgres_class()
 
-        redis_data = redis.hgetall(f"{self.REDIS_KEY}::{id}")
-        if not bool(redis_data):
+        redis_data = redis.get(f"{self.REDIS_KEY}::{id}")
+        if not redis_data:
             postgres_query = {
                 self.POSTGRES_FILTER_COLUMN: id,
             }
@@ -43,7 +44,7 @@ class AbstractExposableDao(Generic[R, P], metaclass=ABCMeta):
                 return None
             return RedisClass(**self._parse_postgres_to_dict(postgres_data))
 
-        return RedisClass(**self._parse_hash_to_dict(redis_data))
+        return RedisClass(**self._parse_redis_to_dict(redis_data))
 
     def get_all(self) -> List[R]:
         """
@@ -57,7 +58,7 @@ class AbstractExposableDao(Generic[R, P], metaclass=ABCMeta):
 
         if redis_data:
             for data in redis_data:
-                all_data.append(RedisClass(**self._parse_hash_to_dict(data)))
+                all_data.append(RedisClass(**self._parse_redis_to_dict(data)))
         else:
             postgres_data = PostgresClass.query.all()
             for data in postgres_data:
@@ -86,8 +87,8 @@ class AbstractExposableDao(Generic[R, P], metaclass=ABCMeta):
                     all_keys = pipe.lrange(self.REDIS_INDEX_KEY, 0, -1)
                     for byte_key in all_keys:
                         key = byte_key.decode("utf-8")
-                        specific_data = pipe.hgetall(f"{self.REDIS_KEY}::{key}")
-                        if bool(specific_data):
+                        specific_data = pipe.get(f"{self.REDIS_KEY}::{key}")
+                        if specific_data:
                             all_data.append(specific_data)
                     break
                 except WatchError:
@@ -103,21 +104,17 @@ class AbstractExposableDao(Generic[R, P], metaclass=ABCMeta):
         return self.__orig_bases__[0].__args__[1]
 
     @classmethod
-    def _parse_hash_to_dict(cls, redis_hash) -> Dict[str, str]:
+    def _parse_redis_to_dict(cls, redis_field) -> Dict[str, str]:
         """
-        Parses Redis hash map to a Python dictionary.
-        Coerces all keys and values into strings.
+        Parses Redis JSON field to a Python dictionary.
         """
-        new_dict = {}
-        for key, value in redis_hash.items():
-            new_dict[key.decode("utf-8")] = value.decode("utf-8")
-
-        return new_dict
+        return json.loads(redis_field)
 
     @abstractmethod
     def _parse_postgres_to_dict(self, postgres_class: P) -> Dict[str, str]:
         """
         Parses Postgres model of given type to a Python dictionary.
+
         This needs to be implemented on every extending class
         to understand how to map internal Postgres database schema
         to an exposable Redis data model.

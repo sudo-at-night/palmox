@@ -1,21 +1,26 @@
 from graphene import List, Field, ObjectType, Boolean, String, Int, Schema
 from graphql import GraphQLError
 from models.feature_flag_dao import FeatureFlagDao
+from models.project_dao import ProjectDao
 
 
 class FeatureFlag(ObjectType):
-    """
-    A feature flag created by the user in the system.
-    """
-
     key = String()
     name = String()
     is_active = Boolean()
 
 
+class Project(ObjectType):
+    key = String()
+    name = String()
+    feature_flags = List(FeatureFlag)
+
+
 class Query(ObjectType):
     feature_flag = Field(FeatureFlag, key=String())
     feature_flags = Field(List(FeatureFlag))
+    project = Field(Project, key=String())
+    projects = Field(List(Project))
 
     def resolve_feature_flag(root, info, key: str):
         flag_dao = FeatureFlagDao()
@@ -36,6 +41,26 @@ class Query(ObjectType):
             raise GraphQLError("Internal error, cannot fetch flags")
 
         return flags
+
+    def resolve_project(root, info, key):
+        project_dao = ProjectDao()
+
+        try:
+            project = project_dao.get(key)
+        except:
+            raise GraphQLError("Internal error, cannot fetch the project")
+
+        return project
+
+    def resolve_projects(root, info):
+        project_dao = ProjectDao()
+
+        try:
+            project = project_dao.get_all()
+        except:
+            raise GraphQLError("Internal error, cannot fetch projects")
+
+        return project
 
 
 schema = Schema(query=Query)
