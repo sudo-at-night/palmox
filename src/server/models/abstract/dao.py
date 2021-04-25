@@ -2,6 +2,8 @@ import json
 from typing import Dict, Union, Generic, TypeVar, List, Union
 from abc import ABCMeta, abstractmethod
 from redis import WatchError
+from blinker import signal
+from events.exposable import EXPOSABLE_EVENTS
 from db.redis import redis_instance as redis
 
 R = TypeVar("R")
@@ -14,18 +16,13 @@ class AbstractExposableDao(Generic[R, P], metaclass=ABCMeta):
     via Redis model.
 
     If exposable data is not available in Redis, it should
-    be retrieved from system's main database, at the same
-    time system's "web" blueprint should be informed about
-    a missing data instance. "Web" blueprint be responsible
-    for updating the Redis database.
+    be retrieved from system's main database.
     """
 
     REDIS_INDEX_KEY: str
     """ In Redis, this leads to where a given data's array of available indexes is. """
     REDIS_KEY: str
     """ In Redis, this leads to where the given data is stored """
-    POSTGRES_FILTER_COLUMN: str
-    """ What column from a given Postgres model should be used for querying """
 
     def get(self, id: str) -> Union[R, None]:
         """
@@ -36,13 +33,13 @@ class AbstractExposableDao(Generic[R, P], metaclass=ABCMeta):
 
         redis_data = redis.get(f"{self.REDIS_KEY}::{id}")
         if not redis_data:
-            postgres_query = {
-                self.POSTGRES_FILTER_COLUMN: id,
-            }
-            postgres_data = PostgresClass.query.filter_by(**postgres_query).first()
+            postgres_data = PostgresClass.query.filter_by(key=id).first()
             if not postgres_data:
                 return None
-            return RedisClass(**self._parse_postgres_to_dict(postgres_data))
+
+            parsed_model = self._parse_postgres_to_dict(postgres_data)
+            signal(EXPOSABLE_EVENTS.MISSING_DATA_SINGLE).send(self, key=self.REDIS_KEY, index_key=self.REDIS_INDEX_KEY, id=id, data=parsed_model)
+            return RedisClass(**parsed_model)
 
         return RedisClass(**self._parse_redis_to_dict(redis_data))
 
@@ -54,6 +51,7 @@ class AbstractExposableDao(Generic[R, P], metaclass=ABCMeta):
         PostgresClass = self._get_extended_postgres_class()
 
         all_data = []
+        raw_all_data = []
         redis_data = self._get_all_from_redis()
 
         if redis_data:
@@ -65,6 +63,9 @@ class AbstractExposableDao(Generic[R, P], metaclass=ABCMeta):
                 all_data.append(
                     RedisClass(**self._parse_postgres_to_dict(data))
                 )
+                raw_all_data.append(self._parse_postgres_to_dict(data))
+            if all_data:
+                signal(EXPOSABLE_EVENTS.MISSING_DATA_ALL).send(self, key=self.REDIS_KEY, index_key=self.REDIS_INDEX_KEY, all_data=raw_all_data)
 
         return all_data
 

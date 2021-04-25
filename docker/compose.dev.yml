@@ -30,12 +30,12 @@ services:
     networks:
       - public
       - internal
-  db_messenger:
-    container_name: palmox_db_messenger
+  redis:
+    container_name: palmox_redis
     build:
-      context: ./db-messenger
+      context: ./redis
       dockerfile: Dockerfile.dev
-    env_file: ./db-messenger/.env
+    env_file: ./redis/.env
     networks:
       - internal
 

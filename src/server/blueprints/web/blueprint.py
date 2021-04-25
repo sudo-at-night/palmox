@@ -1,7 +1,4 @@
 from flask import Blueprint
-from db.postgres import db_session
-from models.project import PostgresProject
-from models.feature_flag import PostgresFeatureFlag
 
 web_blueprint = Blueprint("web", __name__)
 
