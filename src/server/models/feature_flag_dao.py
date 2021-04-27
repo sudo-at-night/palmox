@@ -1,14 +1,13 @@
 from .abstract.dao import AbstractExposableDao
-from .feature_flag import RedisFeatureFlag, PostgresFeatureFlag
+from .feature_flag import FeatureFlag
 
 
-class FeatureFlagDao(AbstractExposableDao[RedisFeatureFlag, PostgresFeatureFlag]):
-    REDIS_INDEX_KEY = "feature-flags"
-    REDIS_KEY = "feature-flag"
+class FeatureFlagDao(AbstractExposableDao[FeatureFlag]):
+    CACHE_PREFIX = "feature-flag"
 
-    def _parse_postgres_to_dict(self, postgres_class: PostgresFeatureFlag):
+    def _parse_result_to_dict(self, original_model: FeatureFlag):
         return {
-            "key": postgres_class.key,
-            "name": postgres_class.name,
-            "is_active": postgres_class.is_active,
+            "key": original_model.key,
+            "name": original_model.name,
+            "is_active": original_model.is_active,
         }

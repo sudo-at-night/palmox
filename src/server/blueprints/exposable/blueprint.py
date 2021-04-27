@@ -1,4 +1,3 @@
-from . import manager
 from flask import Blueprint, render_template, request
 from flask_graphql import GraphQLView
 from dotenv import dotenv_values

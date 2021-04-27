@@ -1,5 +1,5 @@
 from flask_login import LoginManager
-from models.user import PostgresUser
+from models.user import User
 
 login_manager = LoginManager()
 
@@ -10,7 +10,7 @@ def load_user(request):
     if token:
         token = token.replace("Bearer ", "", 1)
 
-        user = PostgresUser.get_by_auth_token(token)
+        user = User.get_by_auth_token(token)
         if user:
             return user
 

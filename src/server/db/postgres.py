@@ -19,8 +19,8 @@ Base.query = db_session.query_property()
 
 
 def init_db():
-    from models.user import PostgresUser
-    from models.feature_flag import PostgresFeatureFlag
-    from models.project import PostgresProject
+    from models.user import User
+    from models.feature_flag import FeatureFlag
+    from models.project import Project
 
     Base.metadata.create_all(bind=engine)

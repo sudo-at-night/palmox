@@ -1,14 +1,13 @@
 from .abstract.dao import AbstractExposableDao
-from .project import RedisProject, PostgresProject
+from .project import Project
 
 
-class ProjectDao(AbstractExposableDao[RedisProject, PostgresProject]):
-    REDIS_INDEX_KEY = "projects"
-    REDIS_KEY = "project"
+class ProjectDao(AbstractExposableDao[Project]):
+    CACHE_PREFIX = "project"
 
-    def _parse_postgres_to_dict(self, postgres_class: PostgresProject):
+    def _parse_result_to_dict(self, original_model: Project):
         return {
-            "key": postgres_class.key,
-            "name": postgres_class.name,
-            "feature_flags": postgres_class.feature_flags,
+            "key": original_model.key,
+            "name": original_model.name,
+            "feature_flags": original_model.feature_flags,
         }

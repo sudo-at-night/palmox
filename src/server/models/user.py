@@ -8,7 +8,7 @@ from sqlalchemy import Column, String, DateTime
 from db.postgres import Base
 
 
-class PostgresUser(Base):
+class User(Base):
     __tablename__ = "user"
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid4)
     email = Column(String(250), unique=True, nullable=False)
@@ -33,7 +33,7 @@ class PostgresUser(Base):
 
     @staticmethod
     def get_by_auth_token(token: str):
-        user = PostgresUser.query.filter_by(auth_token=token).first()
+        user = User.query.filter_by(auth_token=token).first()
         if user is None or user.token_expiration < datetime.utcnow():
             return None
         return user
