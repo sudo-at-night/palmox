@@ -1,13 +1,14 @@
 import React from 'react'
 import { useService } from '@xstate/react'
 import { authMachineService } from 'states/auth'
+import { Button } from 'components/atoms/Button'
 
 export default function ViewAuth() {
     const [, authSend] = useService(authMachineService)
 
     return (
         <>
-            <button onClick={() => authSend('TOGGLE')}>Authorize</button>
+            <Button onClick={() => authSend('TOGGLE')}>Authorize</Button>
         </>
     )
 }

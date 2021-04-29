@@ -1,0 +1,12 @@
+@import 'scss/variables';
+@import 'scss/functions';
+
+.button {
+    border: none;
+    color: $c-soothing-milk;
+    background-color: $c-accent;
+    border-radius: pxToRem(10px);
+    padding: 0.5rem 1rem;
+    box-shadow: 0 6px 0 transparentize($c-black, 0.88);
+    font-weight: 500;
+}
