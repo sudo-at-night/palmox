@@ -1,4 +1,3 @@
-from typing import List
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import relationship
 from db.postgres import Base
