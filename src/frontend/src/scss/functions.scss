@@ -1,3 +1,6 @@
+// Function modified from original gist created by https://github.com/garystorey
+// Gist: https://gist.github.com/garystorey/5920051
+
 @function pxToRem($px) {
     @return $px / 16px * 1rem;
 }

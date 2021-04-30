@@ -1,7 +1,10 @@
-@import 'scss/variables';
+@import 'scss/extendable';
 @import 'scss/functions';
+@import 'scss/variables';
 
 .button {
+    @extend ._focus-outline;
+
     border: none;
     border-radius: pxToRem(10px);
     padding: 0.5rem 1rem;
@@ -9,13 +12,6 @@
     font-weight: 500;
     transition: background-color $t-default, color $t-default,
         outline $t-default, outline-offset $t-default;
-    outline: pxToRem(2px) dashed transparent;
-    outline-offset: pxToRem(6px);
-
-    &:hover,
-    &:focus {
-        outline-offset: pxToRem(2px);
-    }
 }
 
 .button-primary {

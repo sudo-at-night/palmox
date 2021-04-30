@@ -1,0 +1,69 @@
+@import 'scss/extendable';
+@import 'scss/functions';
+@import 'scss/variables';
+
+.container {
+    position: relative;
+}
+
+.container-disabled {
+    @extend .container;
+
+    opacity: 0.32;
+}
+
+.input {
+    @extend ._focus-outline;
+
+    font-size: 1rem;
+    border: none;
+    border-bottom-width: pxToRem(4px);
+    border-bottom-style: solid;
+    padding: 0.1rem 0;
+    transition: outline $t-default, outline-offset $t-default;
+}
+
+.input-empty {
+    @extend .input;
+
+    border-bottom-color: $c-dirty-milk;
+
+    &:hover,
+    &:focus {
+        outline-color: $c-accent-lighter;
+    }
+}
+
+.input-primary {
+    @extend .input;
+
+    border-bottom-color: $c-accent;
+
+    &:hover,
+    &:focus {
+        border-bottom-color: $c-accent-lighter;
+        outline-color: $c-accent-lighter;
+    }
+}
+
+.label {
+    position: absolute;
+    transition: bottom $t-default, font-size $t-default;
+}
+
+.label-above {
+    @extend .label;
+
+    color: $c-dirty-milk;
+    font-size: pxToRem(16px);
+    bottom: 0.3rem;
+    left: 0;
+}
+
+.label-below {
+    @extend .label;
+
+    color: $c-accent;
+    font-size: pxToRem(12px);
+    bottom: -1.1rem;
+}
