@@ -18,5 +18,9 @@ const authMachine = Machine({
     },
 })
 
+/**
+ * Auth machine is responsible for managing user's
+ * authentication state across all views.
+ */
 export const authMachineService = interpret(authMachine)
 authMachineService.start()

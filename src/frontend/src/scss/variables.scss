@@ -2,5 +2,11 @@ $c-black: #000000;
 
 $c-leaf: #38b76e;
 $c-accent: #120078;
+$c-accent-lighter: lighten($c-accent, 10%);
+$c-accent-shadow: transparentize($c-accent, 0.7);
 $c-dirty-milk: #9d9d9a;
 $c-soothing-milk: #fffef7;
+
+$t-easing: cubic-bezier(0.02, 1, 0.4, 0.9);
+$t-duration: 250ms;
+$t-default: $t-duration $t-easing;

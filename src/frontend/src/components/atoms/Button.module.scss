@@ -3,10 +3,45 @@
 
 .button {
     border: none;
-    color: $c-soothing-milk;
-    background-color: $c-accent;
     border-radius: pxToRem(10px);
     padding: 0.5rem 1rem;
-    box-shadow: 0 6px 0 transparentize($c-black, 0.88);
+    box-shadow: 0 pxToRem(6px) 0 transparentize($c-black, 0.88);
     font-weight: 500;
+    transition: background-color $t-default, color $t-default,
+        outline $t-default, outline-offset $t-default;
+    outline: pxToRem(2px) dashed transparent;
+    outline-offset: pxToRem(6px);
+
+    &:hover,
+    &:focus {
+        outline-offset: pxToRem(2px);
+    }
+}
+
+.button-primary {
+    @extend .button;
+
+    color: $c-soothing-milk;
+    background-color: $c-accent;
+
+    &:hover,
+    &:focus {
+        color: #ffffff;
+        background-color: $c-accent-lighter;
+        outline-color: $c-accent-lighter;
+    }
+}
+
+.button-secondary {
+    @extend .button;
+
+    border: pxToRem(1px) solid $c-accent;
+    color: $c-accent;
+    background-color: $c-soothing-milk;
+
+    &:hover,
+    &:focus {
+        background-color: $c-accent-shadow;
+        outline-color: $c-accent;
+    }
 }
