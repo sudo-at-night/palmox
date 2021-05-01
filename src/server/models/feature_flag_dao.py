@@ -5,7 +5,7 @@ from .feature_flag import FeatureFlag
 class FeatureFlagDao(AbstractExposableDao[FeatureFlag]):
     CACHE_PREFIX = "feature-flag"
 
-    def _parse_result_to_dict(self, original_model: FeatureFlag):
+    def _parse_model_to_client_model(self, original_model: FeatureFlag):
         return {
             "key": original_model.key,
             "name": original_model.name,

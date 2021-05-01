@@ -30,7 +30,7 @@ class AbstractExposableDao(Generic[T], metaclass=ABCMeta):
 
 
         if data:
-            parsed_response = self._parse_result_to_dict(data)
+            parsed_response = self._parse_model_to_client_model(data)
             cache.set(resource_cache_key, parsed_response)
             return parsed_response
 
@@ -52,7 +52,7 @@ class AbstractExposableDao(Generic[T], metaclass=ABCMeta):
         data = ExtendedClass.query.all()
         for data in data:
             all_data.append(
-                self._parse_result_to_dict(data)
+                self._parse_model_to_client_model(data)
             )
 
         cache.set(resource_cache_key, all_data)
@@ -62,7 +62,7 @@ class AbstractExposableDao(Generic[T], metaclass=ABCMeta):
         return self.__orig_bases__[0].__args__[0]
 
     @abstractmethod
-    def _parse_result_to_dict(self, original_model: T):
+    def _parse_model_to_client_model(self, original_model: T):
         """
         Parses retreived model of given type to a Python dictionary.
 

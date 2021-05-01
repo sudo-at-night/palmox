@@ -5,7 +5,7 @@ from .project import Project
 class ProjectDao(AbstractExposableDao[Project]):
     CACHE_PREFIX = "project"
 
-    def _parse_result_to_dict(self, original_model: Project):
+    def _parse_model_to_client_model(self, original_model: Project):
         return {
             "key": original_model.key,
             "name": original_model.name,
