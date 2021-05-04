@@ -28,7 +28,6 @@ class AbstractExposableDao(Generic[T], metaclass=ABCMeta):
 
         data = ExtendedClass.query.filter_by(key=id).first()
 
-
         if data:
             parsed_response = self._parse_model_to_client_model(data)
             cache.set(resource_cache_key, parsed_response)
@@ -51,9 +50,7 @@ class AbstractExposableDao(Generic[T], metaclass=ABCMeta):
 
         data = ExtendedClass.query.all()
         for data in data:
-            all_data.append(
-                self._parse_model_to_client_model(data)
-            )
+            all_data.append(self._parse_model_to_client_model(data))
 
         cache.set(resource_cache_key, all_data)
         return all_data

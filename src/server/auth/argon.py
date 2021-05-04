@@ -1,3 +1,6 @@
 from argon2 import PasswordHasher
+from dotenv import dotenv_values
 
-hasher = PasswordHasher(parallelism=2, hash_len=25, salt_len=25)
+config = dotenv_values(".env")
+
+hasher = PasswordHasher(parallelism=int(config["ARGON_PARALLELISM"]), hash_len=25, salt_len=25)
