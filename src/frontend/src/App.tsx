@@ -11,7 +11,7 @@ const ViewHome = lazy(
 function App() {
     const [authState] = useService(authMachineService)
 
-    if (authState.matches(AUTH_STATES.UNAUTHORIZED)) {
+    if (authState.matches(AUTH_STATES.UNAUTHENTICATED)) {
         return <ViewAuth />
     }
 

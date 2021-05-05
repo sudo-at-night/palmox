@@ -1,4 +1,5 @@
 import json
+from exceptions import IncorrectImplementingClass
 from typing import Dict, Union, Generic, TypeVar, Union
 from abc import ABCMeta, abstractmethod
 from cache.redis import cache
@@ -14,6 +15,19 @@ class AbstractExposableDao(Generic[T], metaclass=ABCMeta):
 
     CACHE_PREFIX: str
     """ Unique resource cache key prefix """
+
+    def __init__(self):
+        ExtendedClass = self._get_extended_class()
+
+        if (
+            not hasattr(ExtendedClass, "query")
+            or not hasattr(ExtendedClass.query, "filter_by")
+            or not hasattr(ExtendedClass.query, "all")
+        ):
+            raise IncorrectImplementingClass(
+                implementing_class=self,
+                reason="Implementing class has to use a class derived from SQLAlchemy model which can be queried",
+            )
 
     def get(self, id: str):
         """

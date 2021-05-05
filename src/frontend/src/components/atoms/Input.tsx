@@ -26,7 +26,7 @@ export const Input: FunctionComponent<TInputProps> = (props) => {
             <input
                 id={id.current}
                 className={inputClass}
-                type="text"
+                type={props.type}
                 onChange={(e) => setValue(e.target.value)}
                 disabled={props.disabled}
             >

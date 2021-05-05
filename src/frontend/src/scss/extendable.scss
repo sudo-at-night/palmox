@@ -12,4 +12,8 @@
         outline: pxToRem(2px) dashed transparent;
         outline-offset: pxToRem(2px);
     }
+
+    &:active {
+        outline-offset: pxToRem(0px);
+    }
 }

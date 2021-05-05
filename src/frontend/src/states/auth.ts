@@ -1,19 +1,23 @@
 import { Machine, interpret } from 'xstate'
 
 export enum STATES {
-    AUTHORIZED = 'authorized',
-    UNAUTHORIZED = 'unauthorized',
+    AUTHENTICATED = 'authenticated',
+    UNAUTHENTICATED = 'unauthenticated',
+}
+
+export enum TRANSITIONS {
+    TOGGLE,
 }
 
 const authMachine = Machine({
     id: 'auth',
-    initial: STATES.UNAUTHORIZED,
+    initial: STATES.UNAUTHENTICATED,
     states: {
-        [STATES.UNAUTHORIZED]: {
-            on: { TOGGLE: STATES.AUTHORIZED },
+        [STATES.UNAUTHENTICATED]: {
+            on: { [TRANSITIONS.TOGGLE]: STATES.AUTHENTICATED },
         },
-        [STATES.AUTHORIZED]: {
-            on: { TOGGLE: STATES.UNAUTHORIZED },
+        [STATES.AUTHENTICATED]: {
+            on: { [TRANSITIONS.TOGGLE]: STATES.UNAUTHENTICATED },
         },
     },
 })
