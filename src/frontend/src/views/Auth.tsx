@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import { Motion, spring } from 'react-motion'
+import { useMutation } from 'react-query'
 import { Formik, Field, Form } from 'formik'
 import * as Yup from 'yup'
+import { TCallLogInArgs, callLogIn } from 'api/calls'
 import { springConfig } from 'configs/spring'
 import { Input } from 'components/atoms/Input'
 import { Button } from 'components/atoms/Button'
@@ -64,20 +66,26 @@ export default function ViewAuth() {
 }
 
 function FormLogin(props: TFormProps) {
+    const { mutate: logInUser } = useMutation((credentials: TCallLogInArgs) =>
+        callLogIn(credentials)
+    )
+
     const initialValues = {
         email: '',
         password: '',
     }
 
     const formValidation = Yup.object().shape({
-        email: Yup.string().required('E-Mail is required.').email('Enter a valid E-Mail format.'),
+        email: Yup.string().required('E-Mail is required.').email('Enter a valid E-Mail.'),
         password: Yup.string()
             .required('Password is required.')
             .min(3, 'Password has to have at least 3 characters.'),
     })
 
-    function onSubmit(values: any) {
-        console.log(values)
+    async function onSubmit(values: any) {
+        const { email, password } = values
+
+        logInUser({ email, password })
     }
 
     return (
@@ -115,7 +123,7 @@ function FormRegister(props: TFormProps) {
     }
 
     const formValidation = Yup.object().shape({
-        email: Yup.string().required('E-Mail is required.').email('Enter a valid E-Mail format.'),
+        email: Yup.string().required('E-Mail is required.').email('Enter a valid E-Mail.'),
         password: Yup.string()
             .required('Password is required.')
             .min(3, 'Password has to have at least 3 characters.')

@@ -4,6 +4,10 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import './scss/index.scss'
 
+if (Boolean(process.env.REACT_APP_API_MOCK)) {
+    import('api/mock').then((mock) => mock.triggerMock())
+}
+
 ReactDOM.render(
     <React.StrictMode>
         <App />

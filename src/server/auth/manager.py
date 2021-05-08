@@ -6,10 +6,8 @@ login_manager = LoginManager()
 
 @login_manager.request_loader
 def load_user(request):
-    token = request.headers.get("Authorization")
+    token = request.cookies.get("FSESSIONID")
     if token:
-        token = token.replace("Bearer ", "", 1)
-
         user = User.get_by_auth_token(token)
         if user:
             return user
