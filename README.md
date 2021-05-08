@@ -1,5 +1,7 @@
 # Palmox
 
+⚠️ **The project is under constant development, fork it at any point in time but it’s not going to be finished for some time.**
+
 # Starting the project
 
 The Project can be run using Docker and docker-compose. Each directory inside of [`src`](#src) however can be treated as a separate repository, which means they can be built and ran independently if provided with alternatives to depend on.
