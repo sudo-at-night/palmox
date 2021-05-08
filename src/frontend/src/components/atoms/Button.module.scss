@@ -3,18 +3,17 @@
 @import 'scss/variables';
 
 .button {
-    @extend ._focus-outline;
+    @extend ._focusOutline;
 
     border: none;
     border-radius: pxToRem(10px);
     padding: 0.5rem 1rem;
     box-shadow: 0 pxToRem(6px) 0 transparentize($c-black, 0.88);
     font-weight: 500;
-    transition: background-color $t-default, color $t-default,
-        outline $t-default, outline-offset $t-default;
+    transition: background-color $t-default, color $t-default, outline $t-default, outline-offset $t-default;
 }
 
-.button-primary {
+.button_primary {
     @extend .button;
 
     color: $c-soothing-milk;
@@ -28,7 +27,7 @@
     }
 }
 
-.button-secondary {
+.button_secondary {
     @extend .button;
 
     border: pxToRem(1px) solid $c-accent;

@@ -5,7 +5,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 4rem;
+    padding: 4rem 0;
     pointer-events: none;
     user-select: none;
 }
@@ -14,8 +14,9 @@
     width: pxToRem(40px);
 }
 
-.logo-text {
+.logoText {
     color: $c-accent;
+    font-family: $f-logo;
     font-size: pxToRem(43px);
     font-weight: 900;
     margin: 0;
@@ -25,6 +26,9 @@
 .container {
     height: 100%;
     box-shadow: 0 pxToRem(3px) pxToRem(88px) transparentize(#000000, 0.92);
+}
+
+.inputs {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -32,14 +36,15 @@
 }
 
 .input {
-    margin-bottom: 2rem;
+    margin-bottom: 2.3rem;
+    width: 17rem;
 }
 
 .button {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     width: 10rem;
 }
 
-.button-first {
+.button_first {
     margin-top: 1rem;
 }

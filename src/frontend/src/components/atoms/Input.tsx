@@ -1,8 +1,8 @@
-import React, { useRef, useState, FunctionComponent } from 'react'
-import random from 'randomstring'
+import React, { FunctionComponent } from 'react'
+import { FieldProps } from 'formik'
 import styles from './Input.module.scss'
 
-type TInputProps = {
+type TInputProps = FieldProps & {
     className?: string
     type?: 'text' | 'password'
     disabled?: boolean
@@ -10,28 +10,32 @@ type TInputProps = {
 }
 
 export const Input: FunctionComponent<TInputProps> = (props) => {
-    const id = useRef(random.generate())
-    const [value, setValue] = useState('')
-    const inputClass = value ? styles[`input-primary`] : styles['input-empty']
-    const containerClass = props.disabled
-        ? styles['container-disabled']
-        : styles['container']
-    const labelClass = value ? styles['label-below'] : styles['label-above']
+    const error = props.form.touched[props.field.name] ? props.form.errors[props.field.name] : null
+
+    let containerClass = props.disabled ? styles.container_disabled : styles.container
+    const inputClass = props.field.value ? styles.input_primary : styles.input_empty
+    const labelClass = props.field.value ? styles.label_above : styles.label_placeholder
+
+    if (error) {
+        containerClass = styles.container_error
+    }
 
     return (
         <div className={`${containerClass} ${props.className}`}>
-            <label className={labelClass} htmlFor={id.current}>
+            <label className={labelClass} htmlFor={props.field.name}>
                 {props.label}
             </label>
             <input
-                id={id.current}
+                id={props.field.name}
                 className={inputClass}
                 type={props.type}
-                onChange={(e) => setValue(e.target.value)}
+                onBlur={props.field.onBlur}
+                onChange={props.field.onChange}
                 disabled={props.disabled}
             >
                 {props.children}
             </input>
+            {error ? <p className={styles.error}>{error}</p> : null}
         </div>
     )
 }

@@ -5,13 +5,14 @@ type TButtonProps = {
     className?: string
     onClick?: () => void
     theme?: 'primary' | 'secondary'
+    type?: 'button' | 'submit'
 }
 
 export const Button: FunctionComponent<TButtonProps> = (props) => {
-    const buttonClass = styles[`button-${props.theme}`]
+    const buttonClass = styles[`button_${props.theme}`]
 
     return (
-        <button className={`${buttonClass} ${props.className}`} onClick={props.onClick} type="button">
+        <button className={`${buttonClass} ${props.className}`} onClick={props.onClick} type={props.type}>
             {props.children}
         </button>
     )
@@ -20,4 +21,5 @@ export const Button: FunctionComponent<TButtonProps> = (props) => {
 Button.defaultProps = {
     className: '',
     theme: 'primary',
+    type: 'button',
 }

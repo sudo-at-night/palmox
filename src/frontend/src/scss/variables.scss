@@ -9,6 +9,11 @@ $c-accent-shadow: transparentize($c-accent, 0.7);
 $c-dirty-milk: #9d9d9a;
 $c-soothing-milk: #fffef7;
 
+$c-error: #d65e58;
+
 $t-easing: cubic-bezier(0.02, 1, 0.4, 0.9);
 $t-duration: 250ms;
 $t-default: $t-duration $t-easing;
+
+$f-logo: Orbitron, sans-serif;
+$f-content: Poppins, sans-serif;

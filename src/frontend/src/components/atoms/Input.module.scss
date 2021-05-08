@@ -6,28 +6,42 @@
     position: relative;
 }
 
-.container-disabled {
+.container_disabled {
     @extend .container;
 
     opacity: 0.32;
 }
 
-.input {
-    @extend ._focus-outline;
+.container_error {
+    @extend .container;
 
+    .input {
+        color: $c-error;
+        border-bottom-color: $c-error;
+    }
+
+    .label_placeholder {
+        color: transparentize($c-error, 0.68);
+    }
+
+    .label_above {
+        color: $c-error;
+    }
+}
+
+.input {
+    @extend ._focusOutline;
+
+    width: 100%;
     font-size: 1rem;
     border: none;
     border-bottom-width: pxToRem(4px);
     border-bottom-style: solid;
     padding: 0.1rem 0;
     transition: outline $t-default, outline-offset $t-default;
-
-    &[type='password'] {
-        font-size: 1rem;
-    }
 }
 
-.input-empty {
+.input_empty {
     @extend .input;
 
     border-bottom-color: $c-dirty-milk;
@@ -38,7 +52,7 @@
     }
 }
 
-.input-primary {
+.input_primary {
     @extend .input;
 
     color: $c-accent;
@@ -53,22 +67,28 @@
 
 .label {
     position: absolute;
-    transition: bottom $t-default, font-size $t-default;
+    transition: top $t-default, font-size $t-default;
 }
 
-.label-above {
+.label_placeholder {
     @extend .label;
 
     color: $c-dirty-milk;
     font-size: pxToRem(16px);
-    bottom: 0.3rem;
+    top: 0.1rem;
     left: 0;
 }
 
-.label-below {
+.label_above {
     @extend .label;
 
     color: $c-accent;
     font-size: pxToRem(12px);
-    bottom: -1.3rem;
+    top: -1.4rem;
+}
+
+.error {
+    color: $c-error;
+    font-size: pxToRem(12px);
+    margin: 0;
 }

@@ -11,17 +11,19 @@
     "@types/react": "^17.0.4",
     "@types/react-dom": "^17.0.3",
     "@xstate/react": "^1.3.3",
+    "formik": "^2.2.6",
     "node-sass": "^5.0.0",
     "randomstring": "^1.1.5",
     "react": "^17.0.2",
-    "react-anime": "^4.0.4",
     "react-dom": "^17.0.2",
+    "react-motion": "^0.5.2",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
     "reseter.css": "^1.1.2",
     "typescript": "^4.2.4",
     "web-vitals": "^1.1.1",
-    "xstate": "^4.19.0"
+    "xstate": "^4.19.0",
+    "yup": "^0.32.9"
   },
   "scripts": {
     "start": "BROWSER=none react-scripts start",
@@ -50,6 +52,7 @@
   },
   "devDependencies": {
     "@types/randomstring": "^1.1.6",
+    "@types/react-motion": "^0.0.29",
     "@types/react-router-dom": "^5.1.7",
     "prettier": "^2.2.1"
   }

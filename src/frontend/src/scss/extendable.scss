@@ -3,7 +3,7 @@
 // Makes the element display an outline on focus.
 // This class does not assume the color of the
 // focus outline, it has to be configured on per use basis.
-._focus-outline {
+._focusOutline {
     outline: pxToRem(2px) dashed transparent;
     outline-offset: pxToRem(6px);
 
