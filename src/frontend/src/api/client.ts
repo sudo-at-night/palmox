@@ -9,7 +9,12 @@ export const client = {
      * config to contain global API configuration options.
      */
     call(url: string, config: any) {
-        const urlToCall = `${apiURL}${url}`
+        // Match HTTP:// - HTTPS:// - WWW.
+        const expr = /(^https?:\/\/)|(^www\.)/i
+        const isAbsoluteURL = expr.test(url)
+
+        const urlToCall = isAbsoluteURL ? url : `${apiURL}${url}`
+
         return fetch(urlToCall, config)
     },
 }
