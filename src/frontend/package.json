@@ -27,11 +27,18 @@
         "xstate": "^4.19.0",
         "yup": "^0.32.9"
     },
+    "devDependencies": {
+        "@types/randomstring": "^1.1.6",
+        "@types/react-motion": "^0.0.29",
+        "@types/react-router-dom": "^5.1.7",
+        "prettier": "^2.2.1"
+    },
     "scripts": {
         "start": "BROWSER=none react-scripts start",
         "build": "react-scripts build",
-        "test": "react-scripts test",
-        "test:coverage": "react-scripts test --coverage",
+        "test": "react-scripts test --watchAll=false",
+        "test:coverage": "react-scripts test --coverage --watchAll=false",
+        "test:watch": "react-scripts test",
         "eject": "react-scripts eject",
         "format": "prettier --write ./**/*.{ts,tsx,scss}"
     },
@@ -53,10 +60,11 @@
             "last 1 safari version"
         ]
     },
-    "devDependencies": {
-        "@types/randomstring": "^1.1.6",
-        "@types/react-motion": "^0.0.29",
-        "@types/react-router-dom": "^5.1.7",
-        "prettier": "^2.2.1"
+    "jest": {
+        "coveragePathIgnorePatterns": [
+            "/node_modules/",
+            "/api/mock/",
+            "/src/configs"
+        ]
     }
 }
