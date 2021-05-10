@@ -9,15 +9,13 @@ import * as CALLS from './calls'
 
 const call = <jest.Mock>client.call
 
-describe('API Calls', () => {
-    test('Log In -> Uses email and password to call the API with JSON string', () => {
-        const credentials = { email: 'username@mail.com', password: 'secret' }
+test('Log In -> Uses email and password to call the API with JSON string', () => {
+    const credentials = { email: 'username@mail.com', password: 'secret' }
 
-        CALLS.callLogIn(credentials)
+    CALLS.callLogIn(credentials)
 
-        const callArgs = call.mock.calls[0][1]
-        const callBody = JSON.parse(callArgs.body)
+    const callArgs = call.mock.calls[0][1]
+    const callBody = JSON.parse(callArgs.body)
 
-        expect(callBody).toEqual(callBody)
-    })
+    expect(callBody).toEqual(callBody)
 })
