@@ -3,7 +3,7 @@ Exposable blueprint handles system's client data, and exposes
 them via GraphQL.
 """
 
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template
 from flask_graphql import GraphQLView
 from dotenv import dotenv_values
 from .gql import schema

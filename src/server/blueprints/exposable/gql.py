@@ -1,4 +1,4 @@
-from graphene import List, Field, ObjectType, Boolean, String, Int, Schema
+from graphene import List, Field, ObjectType, Boolean, String, Schema
 from graphql import GraphQLError
 from models.feature_flag_dao import FeatureFlagDao
 from models.project_dao import ProjectDao
@@ -27,7 +27,7 @@ class Query(ObjectType):
 
         try:
             flag = flag_dao.get(key)
-        except:
+        except Exception:
             raise GraphQLError("Internal error, cannot fetch the flag")
 
         return flag
@@ -37,7 +37,7 @@ class Query(ObjectType):
 
         try:
             flags = flag_dao.get_all()
-        except:
+        except Exception:
             raise GraphQLError("Internal error, cannot fetch flags")
 
         return flags
@@ -47,7 +47,7 @@ class Query(ObjectType):
 
         try:
             project = project_dao.get(key)
-        except:
+        except Exception:
             raise GraphQLError("Internal error, cannot fetch the project")
 
         return project
@@ -57,7 +57,7 @@ class Query(ObjectType):
 
         try:
             project = project_dao.get_all()
-        except:
+        except Exception:
             raise GraphQLError("Internal error, cannot fetch projects")
 
         return project

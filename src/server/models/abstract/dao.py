@@ -1,6 +1,5 @@
-import json
 from exceptions import IncorrectImplementingClass
-from typing import Dict, Union, Generic, TypeVar, Union
+from typing import Generic, TypeVar
 from abc import ABCMeta, abstractmethod
 from cache.redis import cache
 
