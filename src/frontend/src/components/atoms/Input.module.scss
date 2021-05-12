@@ -16,16 +16,16 @@
     @extend .container;
 
     .input {
-        color: $c-error;
-        border-bottom-color: $c-error;
+        color: $c-red;
+        border-bottom-color: $c-red;
     }
 
     .label_placeholder {
-        color: transparentize($c-error, 0.68);
+        color: transparentize($c-red, 0.68);
     }
 
     .label_above {
-        color: $c-error;
+        color: $c-red;
     }
 }
 
@@ -88,7 +88,7 @@
 }
 
 .error {
-    color: $c-error;
+    color: $c-red;
     font-size: pxToRem(12px);
     margin: 0;
     margin-top: 0.2rem;

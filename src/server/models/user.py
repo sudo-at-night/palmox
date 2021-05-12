@@ -34,6 +34,6 @@ class User(Base):
     @staticmethod
     def get_by_auth_token(token: str):
         user = User.query.filter_by(auth_token=token).first()
-        if user is None or user.token_expiration < datetime.utcnow():
+        if user is None or user.auth_token_expiration < datetime.utcnow():
             return None
         return user

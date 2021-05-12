@@ -17,3 +17,21 @@ export function callLogIn(args: TCallLogInArgs) {
         body: JSON.stringify({ email, password }),
     })
 }
+
+export type TCallRegisterArgs = {
+    email: string
+    password: string
+    confirmPassword: string
+}
+
+/**
+ * Register new user
+ */
+export function callRegister(args: TCallRegisterArgs) {
+    const { email, password, confirmPassword } = args
+
+    return client.call(ENDPOINTS.REGISTER, {
+        method: 'POST',
+        body: JSON.stringify({ email, password, confirmPassword }),
+    })
+}

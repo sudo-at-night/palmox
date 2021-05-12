@@ -3,7 +3,7 @@ import { Motion, spring } from 'react-motion'
 import { useMutation } from 'react-query'
 import { Formik, Field, Form } from 'formik'
 import * as Yup from 'yup'
-import { TCallLogInArgs, callLogIn } from 'api/calls'
+import { TCallLogInArgs, callLogIn, TCallRegisterArgs, callRegister } from 'api/calls'
 import { springConfig } from 'configs/spring'
 import { Input } from 'components/atoms/Input'
 import { Button } from 'components/atoms/Button'
@@ -66,7 +66,7 @@ export default function ViewAuth() {
 }
 
 function FormLogin(props: TFormProps) {
-    const { mutate: logInUser } = useMutation((credentials: TCallLogInArgs) =>
+    const { mutate: logInUser, isLoading } = useMutation((credentials: TCallLogInArgs) =>
         callLogIn(credentials)
     )
 
@@ -91,22 +91,34 @@ function FormLogin(props: TFormProps) {
     return (
         <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={formValidation}>
             <Form className={styles.inputs}>
-                <Field className={styles.input} component={Input} name="email" label="E-Mail" />
+                <Field
+                    className={styles.input}
+                    component={Input}
+                    name="email"
+                    label="E-Mail"
+                    disabled={isLoading}
+                />
                 <Field
                     className={styles.input}
                     component={Input}
                     name="password"
                     label="Password"
                     type="password"
+                    disabled={isLoading}
                 />
 
-                <Button className={`${styles.button} ${styles.button_first}`} type="submit">
+                <Button
+                    className={`${styles.button} ${styles.button_first}`}
+                    type="submit"
+                    disabled={isLoading}
+                >
                     Log In
                 </Button>
                 <Button
                     className={styles.button}
                     theme="secondary"
                     onClick={() => props.onSetMode('register')}
+                    disabled={isLoading}
                 >
                     Register
                 </Button>
@@ -116,6 +128,10 @@ function FormLogin(props: TFormProps) {
 }
 
 function FormRegister(props: TFormProps) {
+    const { mutate: registerUser, isLoading } = useMutation((credentials: TCallRegisterArgs) =>
+        callRegister(credentials)
+    )
+
     const initialValues = {
         email: '',
         password: '',
@@ -135,19 +151,28 @@ function FormRegister(props: TFormProps) {
     })
 
     function onSubmit(values: any) {
-        console.log(values)
+        const { email, password, confirmPassword } = values
+
+        registerUser({ email, password, confirmPassword })
     }
 
     return (
         <Formik initialValues={initialValues} onSubmit={onSubmit} validationSchema={formValidation}>
             <Form className={styles.inputs}>
-                <Field className={styles.input} component={Input} name="email" label="E-Mail" />
+                <Field
+                    className={styles.input}
+                    component={Input}
+                    name="email"
+                    label="E-Mail"
+                    disabled={isLoading}
+                />
                 <Field
                     className={styles.input}
                     component={Input}
                     name="password"
                     label="Password"
                     type="password"
+                    disabled={isLoading}
                 />
                 <Field
                     className={styles.input}
@@ -155,12 +180,22 @@ function FormRegister(props: TFormProps) {
                     name="confirmPassword"
                     label="Confirm Password"
                     type="password"
+                    disabled={isLoading}
                 />
 
-                <Button className={`${styles.button} ${styles.button_first}`} type="submit">
+                <Button
+                    className={`${styles.button} ${styles.button_first}`}
+                    type="submit"
+                    disabled={isLoading}
+                >
                     Register
                 </Button>
-                <Button className={styles.button} theme="secondary" onClick={() => props.onSetMode('login')}>
+                <Button
+                    className={styles.button}
+                    theme="secondary"
+                    onClick={() => props.onSetMode('login')}
+                    disabled={isLoading}
+                >
                     Log In
                 </Button>
             </Form>

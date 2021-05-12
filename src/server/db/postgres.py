@@ -8,9 +8,7 @@ db_user = config["POSTGRES_USER"]
 db_password = config["POSTGRES_PASSWORD"]
 db_name = config["POSTGRES_DB_NAME"]
 
-engine = create_engine(
-    f"postgresql://{db_user}:{db_password}@db/{db_name}", convert_unicode=True
-)
+engine = create_engine(f"postgresql://{db_user}:{db_password}@db/{db_name}")
 db_session = scoped_session(
     sessionmaker(autocommit=False, autoflush=False, bind=engine)
 )

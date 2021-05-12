@@ -13,6 +13,14 @@
     transition: background-color $t-default, color $t-default, outline $t-default, outline-offset $t-default;
 }
 
+.button_primary_disabled {
+    @extend .button;
+
+    cursor: inherit;
+    color: $c-soothing-milk;
+    background-color: $c-gray;
+}
+
 .button_primary {
     @extend .button;
 
@@ -25,6 +33,15 @@
         background-color: $c-accent-lighter;
         outline-color: $c-accent-lighter;
     }
+}
+
+.button_secondary_disabled {
+    @extend .button;
+
+    cursor: inherit;
+    border: pxToRem(1px) solid $c-gray;
+    color: $c-gray;
+    background-color: $c-soothing-milk;
 }
 
 .button_secondary {

@@ -2,17 +2,25 @@ import React, { FunctionComponent } from 'react'
 import styles from './Button.module.scss'
 
 type TButtonProps = {
-    className?: string
     onClick?: () => void
+    className?: string
     theme?: 'primary' | 'secondary'
     type?: 'button' | 'submit'
+    disabled?: boolean
 }
 
 export const Button: FunctionComponent<TButtonProps> = (props) => {
-    const buttonClass = styles[`button_${props.theme}`]
+    const buttonClass = props.disabled
+        ? styles[`button_${props.theme}_disabled`]
+        : styles[`button_${props.theme}`]
 
     return (
-        <button className={`${buttonClass} ${props.className}`} onClick={props.onClick} type={props.type}>
+        <button
+            className={`${buttonClass} ${props.className}`}
+            onClick={props.onClick}
+            type={props.type}
+            disabled={props.disabled}
+        >
             {props.children}
         </button>
     )

@@ -17,5 +17,16 @@ test('Log In -> Uses email and password to call the API with JSON string', () =>
     const callArgs = call.mock.calls[0][1]
     const callBody = JSON.parse(callArgs.body)
 
-    expect(callBody).toEqual(callBody)
+    expect(callBody).toEqual(credentials)
+})
+
+test('Register -> Uses email, password and confirmation of password to call the API with JSON string', () => {
+    const credentials = { email: 'username@mail.com', password: 'secret', confirmPassword: 'secret' }
+
+    CALLS.callRegister(credentials)
+
+    const callArgs = call.mock.calls[0][1]
+    const callBody = JSON.parse(callArgs.body)
+
+    expect(callBody).toEqual(credentials)
 })
