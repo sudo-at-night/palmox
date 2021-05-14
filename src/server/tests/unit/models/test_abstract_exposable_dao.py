@@ -17,7 +17,7 @@ def test_returns_mapped_client_model(mocker):
     """
     Data is fetched from the database and mapped
     to the client model specified by parse function
-    on the concrete class.
+    on the implementing class.
     """
     mocker.patch("cache.redis.cache.get", return_value=None)
     mocker.patch("cache.redis.cache.set", return_value=None)
@@ -58,7 +58,7 @@ def test_returns_mapped_client_model_all(mocker):
     """
     All data is fetched from the database and mapped
     to the client model specified by parse function
-    on the concrete class.
+    on the implementing class.
     """
     mocker.patch("cache.redis.cache.get", return_value=None)
     mocker.patch("cache.redis.cache.set", return_value=None)

@@ -52,11 +52,14 @@ def test_feature_flag(mocker):
         }
     }
 
+
 def test_project(mocker):
     """
     Projects are queried and returned correctly.
     """
-    DaoMock = DaoStub({"key": "test-project", "name": "Test Project", "feature_flags": []})
+    DaoMock = DaoStub(
+        {"key": "test-project", "name": "Test Project", "feature_flags": []}
+    )
     mocker.patch("blueprints.exposable.gql.ProjectDao", return_value=DaoMock)
     client = Client(schema)
 
@@ -76,11 +79,17 @@ def test_project(mocker):
 
     assert query == {
         "data": {
-            "project": {"key": "test-project", "name": "Test Project", "featureFlags": []}
+            "project": {
+                "key": "test-project",
+                "name": "Test Project",
+                "featureFlags": [],
+            }
         }
     }
 
-    DaoMock = DaoStub([{"key": "test-project", "name": "Test Project", "feature_flags": []}])
+    DaoMock = DaoStub(
+        [{"key": "test-project", "name": "Test Project", "feature_flags": []}]
+    )
     mocker.patch("blueprints.exposable.gql.ProjectDao", return_value=DaoMock)
 
     query = client.execute(

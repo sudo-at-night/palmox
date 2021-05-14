@@ -15,8 +15,10 @@ app.secret_key = config["FLASK_SECRET_KEY"]
 login_manager.init_app(app)
 cache.init_app(app)
 
+
 @app.teardown_appcontext
 def shutdown_session(exception=None):
     db_session.remove()
+
 
 init_db()

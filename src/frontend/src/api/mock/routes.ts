@@ -1,12 +1,12 @@
 import { Server, Response } from 'miragejs'
 import { apiURL } from 'api/client'
-import * as ENDPOINTS from 'api/enpoints'
+import * as ENDPOINTS from 'api/endpoints'
 
 export function routes(this: Server) {
     this.urlPrefix = apiURL || ''
     this.timing = 1000
 
-    this.post(ENDPOINTS.USER_LOG_IN, (schema: any, request) => {
+    this.post(ENDPOINTS.USER_LOGIN, (schema: any, request) => {
         const body = JSON.parse(request.requestBody)
         const user = schema.users.findBy({ email: body.email })
 

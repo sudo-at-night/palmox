@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from unittest.mock import Mock
 from models.user import User
 
 
@@ -38,13 +37,14 @@ def test_generated_token_length():
     assert len(user.auth_token) == 32
 
 
-def test_expired_token_returns_no_user():
+def test_expired_token_returns_no_user(mocker):
     """
     If user's token is expired (date in the past)
     no user should be returned for authentication.
     """
+    mocker.patch.object(User, "query", autospec=True)
+
     user = User(email="test@mail.com", password="testme")
-    User.query = Mock()
     User.query.filter_by.return_value.first.return_value = user
     now_date = datetime.utcnow()
     past_date = now_date - timedelta(hours=1)

@@ -1,5 +1,5 @@
 import { client } from 'api/client'
-import * as ENDPOINTS from 'api/enpoints'
+import * as ENDPOINTS from 'api/endpoints'
 
 export type TCallLogInArgs = {
     email: string
@@ -12,7 +12,7 @@ export type TCallLogInArgs = {
 export function callLogIn(args: TCallLogInArgs) {
     const { email, password } = args
 
-    return client.call(ENDPOINTS.USER_LOG_IN, {
+    return client.call(ENDPOINTS.USER_LOGIN, {
         method: 'POST',
         body: JSON.stringify({ email, password }),
     })
@@ -30,7 +30,7 @@ export type TCallRegisterArgs = {
 export function callRegister(args: TCallRegisterArgs) {
     const { email, password, confirmPassword } = args
 
-    return client.call(ENDPOINTS.REGISTER, {
+    return client.call(ENDPOINTS.USER_REGISTER, {
         method: 'POST',
         body: JSON.stringify({ email, password, confirmPassword }),
     })
