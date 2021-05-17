@@ -1,5 +1,7 @@
 # Palmox
 
+![GitHub](https://img.shields.io/github/license/sudo-at-night/palmox?style=for-the-badge)
+
 ⚠️ **The project is under constant development, fork it at any point in time but it’s not going to be finished for some time.**
 
 # Starting the project
