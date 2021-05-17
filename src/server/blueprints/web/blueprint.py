@@ -30,6 +30,16 @@ def login():
     return response
 
 
+@web_blueprint.get("/logout")
+def logout():
+    response = make_response()
+
+    response.delete_cookie("FSESSIONID", httponly=True)
+    response.status_code = 204
+
+    return response
+
+
 @web_blueprint.errorhandler(HTTPException)
 def handle_request_error(err):
     response = make_response()

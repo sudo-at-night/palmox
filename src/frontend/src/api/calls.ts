@@ -18,6 +18,15 @@ export function callLogIn(args: TCallLogInArgs) {
     })
 }
 
+/**
+ * Log the user out
+ */
+export function callLogOut() {
+    return client.call(ENDPOINTS.USER_LOGOUT, {
+        method: 'GET',
+    })
+}
+
 export type TCallRegisterArgs = {
     email: string
     password: string

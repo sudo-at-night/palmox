@@ -23,8 +23,7 @@ def test_login(client, mocker):
 
     assert response.status_code == 204
     assert cookie_header is not None
-    assert "HttpOnly;" in cookie_header
-    assert user.auth_token in cookie_header
+    assert f"FSESSIONID={user.auth_token}; HttpOnly;" in cookie_header
 
 
 def test_login_failure(client, mocker):
@@ -43,4 +42,5 @@ def test_login_failure(client, mocker):
             "password": "testme",
         },
     )
+
     assert response.status_code == 401
