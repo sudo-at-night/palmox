@@ -28,6 +28,10 @@ class User(Base):
         self.auth_token = base64.b64encode(os.urandom(24)).decode("utf-8")
         self.auth_token_expiration = now + timedelta(hours=24)
 
+    def invalidate_auth_token(self):
+        self.auth_token = ""
+        self.auth_token_expiration = None
+
     def check_password(self, password):
         return hasher.verify(self.password, password)
 
