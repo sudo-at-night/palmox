@@ -1,19 +1,21 @@
 from flask import Blueprint, request, make_response
-from werkzeug.exceptions import HTTPException, Unauthorized
+from werkzeug.exceptions import Conflict, HTTPException, Unauthorized, BadRequest
+from jsonschema import validate, FormatChecker, ValidationError
 from db.postgres import db_session
 from models.user import User
+from .forms import login_schema, register_schema
 
 web_blueprint = Blueprint("web", __name__)
 
 
 @web_blueprint.post("/login")
 def login():
-    if (
-        not request.json
-        or "email" not in request.json
-        or "password" not in request.json
-    ):
-        raise Unauthorized("Wrong credentials passed")
+    try:
+        validate(
+            instance=request.json, schema=login_schema, format_checker=FormatChecker()
+        )
+    except ValidationError:
+        raise BadRequest("Bad request")
 
     response = make_response()
     response.status_code = 204
@@ -54,6 +56,34 @@ def logout():
         db_session.commit()
 
     response.delete_cookie("FSESSIONID", httponly=True)
+
+    return response
+
+
+@web_blueprint.post("/register")
+def register():
+    try:
+        validate(
+            instance=request.json,
+            schema=register_schema,
+            format_checker=FormatChecker(),
+        )
+    except ValidationError:
+        raise BadRequest("Bad request")
+
+    email: str = request.json["email"]
+    password: str = request.json["password"]
+
+    user = User.query.filter_by(email=email).first()
+    if user is not None:
+        raise Conflict(f"User with email '{email}' already exists in the database")
+
+    new_user = User(email=email, password=password)
+    db_session.add(new_user)
+    db_session.commit()
+
+    response = make_response()
+    response.status_code = 201
 
     return response
 

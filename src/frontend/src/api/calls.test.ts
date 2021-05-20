@@ -29,8 +29,8 @@ test('Log Out -> Calls the API', () => {
     expect(call).toHaveBeenCalledWith(ENDPOINTS.USER_LOGOUT, { method: 'GET' })
 })
 
-test('Register -> Uses email, password and confirmation of password to call the API with JSON string', () => {
-    const credentials = { email: 'username@mail.com', password: 'secret', confirmPassword: 'secret' }
+test('Register -> Uses email and password to call the API with JSON string', () => {
+    const credentials = { email: 'username@mail.com', password: 'secret' }
 
     CALLS.callRegister(credentials)
 

@@ -1,9 +1,11 @@
+import type { TCallLogInArgs, TCallRegisterArgs } from 'api/calls'
+
 import React, { useState } from 'react'
 import { Motion, spring } from 'react-motion'
 import { useMutation } from 'react-query'
 import { Formik, Field, Form } from 'formik'
 import * as Yup from 'yup'
-import { TCallLogInArgs, callLogIn, TCallRegisterArgs, callRegister } from 'api/calls'
+import { callLogIn, callRegister } from 'api/calls'
 import { springConfig } from 'configs/spring'
 import { Input } from 'components/atoms/Input'
 import { Button } from 'components/atoms/Button'
@@ -76,7 +78,7 @@ function FormLogin(props: TFormProps) {
     }
 
     const formValidation = Yup.object().shape({
-        email: Yup.string().required('E-Mail is required.').email('Enter a valid E-Mail.'),
+        email: Yup.string().min(3).required('E-Mail is required.').email('Enter a valid E-Mail.'),
         password: Yup.string()
             .required('Password is required.')
             .min(3, 'Password has to have at least 3 characters.'),
@@ -139,7 +141,7 @@ function FormRegister(props: TFormProps) {
     }
 
     const formValidation = Yup.object().shape({
-        email: Yup.string().required('E-Mail is required.').email('Enter a valid E-Mail.'),
+        email: Yup.string().min(3).required('E-Mail is required.').email('Enter a valid E-Mail.'),
         password: Yup.string()
             .required('Password is required.')
             .min(3, 'Password has to have at least 3 characters.')
@@ -151,9 +153,9 @@ function FormRegister(props: TFormProps) {
     })
 
     function onSubmit(values: any) {
-        const { email, password, confirmPassword } = values
+        const { email, password } = values
 
-        registerUser({ email, password, confirmPassword })
+        registerUser({ email, password })
     }
 
     return (

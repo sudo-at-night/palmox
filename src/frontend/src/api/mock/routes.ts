@@ -1,4 +1,6 @@
-import { Server, Response } from 'miragejs'
+import type { Server } from 'miragejs'
+
+import { Response } from 'miragejs'
 import { apiURL } from 'api/client'
 import * as ENDPOINTS from 'api/endpoints'
 

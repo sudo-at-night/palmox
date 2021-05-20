@@ -1,5 +1,7 @@
-import React, { FunctionComponent } from 'react'
-import { FieldProps } from 'formik'
+import type { FunctionComponent } from 'react'
+import type { FieldProps } from 'formik'
+
+import React from 'react'
 import styles from './Input.module.scss'
 
 type TInputProps = FieldProps & {

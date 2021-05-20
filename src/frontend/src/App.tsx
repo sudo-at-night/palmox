@@ -5,7 +5,7 @@ import { useService } from '@xstate/react'
 import ViewAuth from 'views/Auth'
 import { authMachineService, STATES as AUTH_STATES } from 'states/auth'
 
-const ViewHome = lazy(() => import(/* webpackChunkName: "authorized" */ 'views/Home'))
+const ViewHome = lazy(() => import(/* webpackChunkName: "authenticated" */ 'views/Home'))
 
 const queryClient = new QueryClient()
 

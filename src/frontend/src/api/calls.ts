@@ -30,17 +30,16 @@ export function callLogOut() {
 export type TCallRegisterArgs = {
     email: string
     password: string
-    confirmPassword: string
 }
 
 /**
  * Register new user
  */
 export function callRegister(args: TCallRegisterArgs) {
-    const { email, password, confirmPassword } = args
+    const { email, password } = args
 
     return client.call(ENDPOINTS.USER_REGISTER, {
         method: 'POST',
-        body: JSON.stringify({ email, password, confirmPassword }),
+        body: JSON.stringify({ email, password }),
     })
 }

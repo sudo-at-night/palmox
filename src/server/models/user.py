@@ -29,7 +29,7 @@ class User(Base):
         self.auth_token_expiration = now + timedelta(hours=24)
 
     def invalidate_auth_token(self):
-        self.auth_token = ""
+        self.auth_token = None
         self.auth_token_expiration = None
 
     def check_password(self, password):

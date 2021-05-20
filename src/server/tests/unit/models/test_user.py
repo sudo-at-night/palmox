@@ -62,3 +62,26 @@ def test_expired_token_returns_no_user(mocker):
     looked_up_user = user.get_by_auth_token("token123")
 
     assert looked_up_user is not None
+
+
+def test_invalidate_token_removes_token(mocker):
+    """
+    User's auth token can be invalidated,
+    which means it'll be removed from the model.
+    """
+    user = User(email="test@mail.com", password="testme")
+
+    now_date = datetime.utcnow()
+    future_date = now_date + timedelta(hours=1)
+    token = "token123"
+
+    user.auth_token = token
+    user.auth_token_expiration = future_date
+
+    assert user.auth_token == token
+    assert user.auth_token_expiration == future_date
+
+    user.invalidate_auth_token()
+
+    assert user.auth_token is None
+    assert user.auth_token_expiration is None
