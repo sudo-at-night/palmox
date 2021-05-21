@@ -34,10 +34,15 @@ export const Input: FunctionComponent<TInputProps> = (props) => {
                 onBlur={props.field.onBlur}
                 onChange={props.field.onChange}
                 disabled={props.disabled}
+                data-testid="input-input"
             >
                 {props.children}
             </input>
-            {error ? <p className={styles.error}>{error}</p> : null}
+            {error ? (
+                <p className={styles.error} data-testid="input-error">
+                    {error}
+                </p>
+            ) : null}
         </div>
     )
 }

@@ -78,9 +78,6 @@ def test_invalidate_token_removes_token(mocker):
     user.auth_token = token
     user.auth_token_expiration = future_date
 
-    assert user.auth_token == token
-    assert user.auth_token_expiration == future_date
-
     user.invalidate_auth_token()
 
     assert user.auth_token is None
